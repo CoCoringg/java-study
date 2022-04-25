@@ -13,7 +13,7 @@
   </properties>
   
   <build>
-  	<finalName>chapter03</finalName>
+  	<finalName>practice01</finalName>
   </build>
   
 </project>
