@@ -1,11 +1,19 @@
 package chapter03;
 
 public class Goods {
+	public static int countOfGoods;
 	private String name; 
 	private int price;
 	private int countStock;
 	private int countSold;
 	
+	public Goods() {
+		countOfGoods++;
+	}
+	
+	
+	// private 로 정보은닉 => getter, setter 만들어서 씀 
+	// source에 Generate Getters and Setters.. 로 한번에 만들 수 있음
 	public int getCountSold() {
 		return countSold;
 	}
@@ -42,6 +50,20 @@ public class Goods {
 		this.countStock = countStock;
 	}
 	
-	// private 로 정보은닉 => getter, setter 만들어서 씀 
-	// source에 Generate Getters and Setters.. 로 한번에 만들 수 있음
+	public void showwInfo() {
+		System.out.println(
+				"name:"+name+
+				", price:" + price +
+				", countStock:" + countStock +
+				", countSold:" + countSold
+				);
+	}
+
+	public int calcDiscountPrice(double discountRate) {
+		return (int)(discountRate * price);
+	}
+	
+	
+	
+	
 }
