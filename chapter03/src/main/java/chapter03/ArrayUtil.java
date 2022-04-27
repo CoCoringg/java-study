@@ -10,14 +10,26 @@ public class ArrayUtil {
 		return result;
 	}
 
-	public static double[] doubleToInt(double[] ds) {
-		// TODO Auto-generated method stub
-		return null;
+	public static int[] doubleToInt(double[] ds) {
+		int[] result = new int[ds.length];
+		for (int i=0;i<ds.length;i++) {
+			result[i] = (int)ds[i];
+		}
+		return result;
 	}
 
-	public static double[] concat(int[] is, int[] is2) {
-		// TODO Auto-generated method stub
-		return null;
+	public static int[] concat(int[] is, int[] is2) {
+		int[] result = new int[is.length+is2.length];
+		
+		for (int i=0;i<is.length;i++) {
+			result[i] = is[i];
+		}
+		int index = 0;
+		for (int i=is.length;i<is.length+is2.length;i++) {
+			result[i] = is2[index];
+			index++;
+		}
+		return result;
 	}
 
 
