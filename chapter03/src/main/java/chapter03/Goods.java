@@ -7,8 +7,25 @@ public class Goods {
 	private int countStock;
 	private int countSold;
 	
+	// 생성자 1개라도 없으면 컴파일러가 기본 생성자 넣어줌
+	// but 1개라도 있으면 기본 생성자 만들어야 함
 	public Goods() {
+		this(null, 0, 0, 0);
+	}
+	
+	public Goods(String name, int price, int countStock, int countSold) {
 		countOfGoods++;
+		
+		this.name = name;
+		this.price = price;
+		this.countSold = countSold;
+		this.countStock = countStock;
+	}
+	
+	public Goods(String name) {
+//		countOfGoods++;
+//		this.name = name;
+		this(name, 0,0,0);
 	}
 	
 	

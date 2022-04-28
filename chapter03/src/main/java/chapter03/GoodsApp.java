@@ -12,8 +12,11 @@ public class GoodsApp {
 		
 		goods.showwInfo();
 		
-		Goods goods2 = new Goods();
-		Goods goods3 = new Goods();
+		Goods goods2 = new Goods("tv", 10000, 10, 10);
+		goods2.showwInfo();
+		
+		Goods goods3 = new Goods("computer");
+		goods3.showwInfo();
 		
 		System.out.println("Goods Count:" + Goods.countOfGoods);
 		
