@@ -25,10 +25,23 @@ public class Point {
 		this.y = y;
 	}
 	
+	//메소드 오버로딩
 	public void show() {
 		System.out.println("점[x="+ x+ ",y=" + y+"]을 그렸습니다.");
 		
 	}
+	
+	public void show(boolean visible) {
+		if (visible) {
+			show();
+		} else {
+			System.out.println("점[x="+ x+ ",y=" + y+"]을 지웠습니다.");
+		}
+	}
+	
+//	public void disapear() {
+//		System.out.println("점[x="+ x+ ",y=" + y+"]을 지웠습니다.");
+//	}
 	
 	
 

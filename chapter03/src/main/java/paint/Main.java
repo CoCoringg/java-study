@@ -14,6 +14,7 @@ public class Main {
 //		point2.show();
 		drawPoint(point2);
 //		drawPoint(new Point(50,100)); 도 가능
+		point2.show(false);
 		
 	}
 	
