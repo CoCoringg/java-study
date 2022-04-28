@@ -16,10 +16,18 @@ public class Main {
 //		drawPoint(new Point(50,100)); 도 가능
 		point2.show(false);
 		
+		Point point3 = new ColorPoint(40, 50, "red");
+		drawPoint(point3);
+//		point3.show(true); 
+		 
 	}
 	
 	public static void drawPoint(Point point) {
 		point.show();
 	}
+	
+//	public static void drawColorPoint(ColorPoint point) {
+//		point.show();
+//	}
 
 }
