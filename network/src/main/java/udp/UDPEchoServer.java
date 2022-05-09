@@ -17,7 +17,7 @@ public class UDPEchoServer {
 			
 			while(true) {
 				// 2. 데이터 수신
-				 DatagramPacket rcvPacket= new DatagramPacket(new byte[BUFFER_SIZE], BUFFER_SIZE);
+				DatagramPacket rcvPacket= new DatagramPacket(new byte[BUFFER_SIZE], BUFFER_SIZE);
 				socket.receive(rcvPacket);
 				
 				byte[] rcvData = rcvPacket.getData();
