@@ -42,7 +42,6 @@ public class ChatServerThread extends Thread {
 				String request = br.readLine();
 				if( request == null ) {
 					ChatServer.log( "클라이언트로 부터 연결 끊김" );
-					doQuit(printWriter);
 					break;
 				}
 
