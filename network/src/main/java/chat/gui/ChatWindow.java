@@ -17,12 +17,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.SocketException;
-
-import chat.ChatClientThread;
 import chat.ChatServer;
 
 public class ChatWindow {
@@ -33,7 +29,7 @@ public class ChatWindow {
 	private TextField textField;
 	private TextArea textArea;
 	private Socket socket;
-	private String name;
+	private PrintWriter printWriter;
 
 
 	public ChatWindow(String name, Socket socket) { // socket 받을 수 있도록 바꿔야함
@@ -43,23 +39,17 @@ public class ChatWindow {
 		textField = new TextField();
 		textArea = new TextArea(30, 80);
 		this.socket = socket;
-		this.name = name;
+		
 	}
 
 	public void show() {
 		/*
 		 * 1. UI 초기화
 		 */
+		
 		// Button
 		buttonSend.setBackground(Color.GRAY);
-		buttonSend.setForeground(Color.WHITE);
-//		buttonSend.addActionListener(
-//				(ActionEvent actionEvent) -> {
-//					System.out.println("clicked!!");
-//				}
-//				actionEvent -> System.out.println("clicked!!");
-//		);
-		
+		buttonSend.setForeground(Color.WHITE);		
 		buttonSend.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed( ActionEvent actionEvent ) {
@@ -104,41 +94,31 @@ public class ChatWindow {
 		 * 2. IOStream (Pipeline established)
 		 */
 		try {
-			StringReader result=new StringReader(textArea.getText());
-			BufferedReader br = new BufferedReader(result);
-			PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
-			
-			String line = br.readLine();
-			while(line!=null) {
-				System.out.println(line);
-				if( "quit".equals( line ) == true ) {
-					// 8. quit 프로토콜 처리
-					printWriter.println("quit");
-					break;
-				} else {
-					// 9. 메시지 처리
-					printWriter.println("message:" + line);
-				}
-			}
-		} catch (IOException ex) {
+			printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
+		}  catch (IOException ex) {
 			ChatServer.log( "error:" + ex );
 		}
-		
+
 
 		/*
 		 * 3. Chat Client Thread 생성하고 실행 (밑에 만든거)
 		 */
+		
 		new ChatClientThread(socket).start();
 	}
 	
 	private void sendMessage() {
 		String message = textField.getText();
-		System.out.println("메세지 보내는 프로토콜 구현:"+message);
+		
+		if("quit".equals(message)) {
+			finish();
+		}
+		
+		printWriter.println("message:"+message);
+		
 		textField.setText("");
 		textField.requestFocus();
-		
-		// Chat Client Thread에서 서버로부터 받은 메세지가 있다고 치고~~(가짜데이터)
-		updateTextArea(name+" : "+message);
+
 		
 	}
 	
@@ -149,16 +129,10 @@ public class ChatWindow {
 	}
 	
 	private void finish() {
-		System.out.println("소켓 닫기 or 방나가기(quit) 프로토콜 구현");
+		printWriter.println("quit");
 		System.exit(0);
 	}
 	
-	/**
-	 * 
-	 * @author 청출어람_PC09
-	 * Receive Thread from Chat Server
-	 *
-	 */
 	private class ChatClientThread extends Thread {
 		
 		private Socket socket;
@@ -170,8 +144,6 @@ public class ChatWindow {
 
 		@Override
 		public void run() {
-//			String message = "둘리:안녕";
-//			updateTextArea(message); 
 			/* reader를 통해 읽은 데이터 콘솔에 출력하기 (message 처리) */
 			try {
 				this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));

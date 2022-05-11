@@ -59,16 +59,16 @@ public class ChatServerThread extends Thread {
 
 			}
 		} catch(SocketException ex) {
-			System.out.println("[server] suddenly closed by client");
+			ChatServer.log("suddenly closed by client");
 		} catch (IOException ex) {
-			System.out.println("[server] error:" + ex);
+			ChatServer.log("error:" + ex);
 		} finally {
 			try {
 				if (socket != null && !socket.isClosed()) {
 					socket.close();
 				}
 			} catch (IOException ex) {
-				ex.printStackTrace();
+				ChatServer.log("error:" + ex);
 			}
 		}		
 	}
@@ -80,6 +80,7 @@ public class ChatServerThread extends Thread {
 
 		String data = nickname + "님이 퇴장 하였습니다."; 
 		broadcast( data );
+		
 	}
 
 	private void removeWriter( Writer writer ) {

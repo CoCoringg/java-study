@@ -37,7 +37,6 @@ public class ChatClientApp {
 				name = scanner.nextLine();
 
 				if (name.isEmpty() == false ) {
-//					break;
 					printWriter.println( "join:" + name );
 					String data = br.readLine();
 					
@@ -45,30 +44,18 @@ public class ChatClientApp {
 						System.out.println("입장하였습니다. 즐거운 채팅 되세요");
 						break;
 					}
-					
 				} 
-					System.out.println("대화명은 한 글자 이상 입력해야 합니다.\n");
+				System.out.println("대화명은 한 글자 이상 입력해야 합니다.\n");
 			}
 			
 			new ChatWindow(name, socket).show();
-
-//			scanner.close();
-
-			// 1. create socket 
-			// 2. connect server
-			// 3. get iostream(pipline established)
-			// 4. join protocol 처리 --> "join:둘리\n" pw.println("join:둘리");
-			// join:ok <-- String line = br.readline(); line => join:ok
-			// if ("join:ok".equals(line){}
-			// 서버 : 들어와있는 사람들 구현 writers => chatusers 
-			
-			
 		} catch( IOException ex ) {
 			ChatServer.log( "error:" + ex );
-		}
+		} 
 	}
-
 }
+
+
 
 		
 
