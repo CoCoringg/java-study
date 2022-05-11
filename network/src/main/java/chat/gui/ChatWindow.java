@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.SocketException;
@@ -33,6 +34,7 @@ public class ChatWindow {
 	private TextArea textArea;
 	private Socket socket;
 	private String name;
+
 
 	public ChatWindow(String name, Socket socket) { // socket 받을 수 있도록 바꿔야함
 		frame = new Frame(name);
@@ -102,12 +104,22 @@ public class ChatWindow {
 		 * 2. IOStream (Pipeline established)
 		 */
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+			StringReader result=new StringReader(textArea.getText());
+			BufferedReader br = new BufferedReader(result);
 			PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
 			
-			String data = textField.getText();
-//			printWriter.println("message:"+data); 
-			
+			String line = br.readLine();
+			while(line!=null) {
+				System.out.println(line);
+				if( "quit".equals( line ) == true ) {
+					// 8. quit 프로토콜 처리
+					printWriter.println("quit");
+					break;
+				} else {
+					// 9. 메시지 처리
+					printWriter.println("message:" + line);
+				}
+			}
 		} catch (IOException ex) {
 			ChatServer.log( "error:" + ex );
 		}
@@ -129,6 +141,7 @@ public class ChatWindow {
 		updateTextArea(name+" : "+message);
 		
 	}
+	
 	
 	private void updateTextArea(String message) {
 		textArea.append(message);
