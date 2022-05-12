@@ -108,18 +108,20 @@ public class ChatWindow {
 	}
 	
 	private void sendMessage() {
-		String message = textField.getText();
 		
+		String message = textField.getText();
 		if("quit".equals(message)) {
 			finish();
+		}
+		
+		if("".equals(message)) {
+			return;
 		}
 		
 		printWriter.println("message:"+message);
 		
 		textField.setText("");
 		textField.requestFocus();
-
-		
 	}
 	
 	
@@ -149,9 +151,7 @@ public class ChatWindow {
 				this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 				while (true) {
 					String data = bufferedReader.readLine();
-					System.out.println(data);
 					updateTextArea(data);
-					
 				}
 			} catch (SocketException ex) {
 				System.out.println("채팅을 종료하였습니다.");
