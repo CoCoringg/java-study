@@ -19,6 +19,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
+
 import chat.ChatServer;
 
 public class ChatWindow {
@@ -28,8 +31,11 @@ public class ChatWindow {
 	private Button buttonSend;
 	private TextField textField;
 	private TextArea textArea;
+	private TextArea textArea2;
 	private Socket socket;
 	private PrintWriter printWriter;
+	private String name;
+	private List<String> users = new ArrayList<String>();
 
 
 	public ChatWindow(String name, Socket socket) { // socket 받을 수 있도록 바꿔야함
@@ -37,7 +43,9 @@ public class ChatWindow {
 		pannel = new Panel();
 		buttonSend = new Button("Send");
 		textField = new TextField();
-		textArea = new TextArea(30, 80);
+		textArea = new TextArea(30, 60);
+		textArea2 = new TextArea(10,20);
+		this.name = name;
 		this.socket = socket;
 		
 	}
@@ -46,6 +54,12 @@ public class ChatWindow {
 		/*
 		 * 1. UI 초기화
 		 */
+		textArea.append("입장하였습니다. 즐거운 채팅 되세요");
+		textArea.append("\n");
+		
+		textArea2.append("채팅 유저 목록");
+		textArea2.append("\n");
+		users.add(name);
 		
 		// Button
 		buttonSend.setBackground(Color.GRAY);
@@ -79,7 +93,9 @@ public class ChatWindow {
 
 		// TextArea
 		textArea.setEditable(false);
-		frame.add(BorderLayout.CENTER, textArea);
+		textArea2.setEditable(false);
+		frame.add(BorderLayout.WEST, textArea);
+		frame.add(BorderLayout.EAST, textArea2);
 
 		// Frame
 		frame.addWindowListener(new WindowAdapter() {
@@ -130,6 +146,11 @@ public class ChatWindow {
 		textArea.append("\n");
 	}
 	
+	private void updateTextArea2(String user) {
+		textArea2.append(user);
+		textArea2.append("\n");
+	}
+	
 	private void finish() {
 		printWriter.println("quit");
 		System.exit(0);
@@ -151,7 +172,18 @@ public class ChatWindow {
 				this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 				while (true) {
 					String data = bufferedReader.readLine();
+//					String[] tokens = data.split(":");
+//					if("user".equals(tokens[0])) {
+//						users.add(tokens[1]);
+//					} else {
+//						updateTextArea(data);
+//					}
+//					for(String user:users) {
+//						updateTextArea2(user);
+//					}
+					
 					updateTextArea(data);
+					
 				}
 			} catch (SocketException ex) {
 				System.out.println("채팅을 종료하였습니다.");

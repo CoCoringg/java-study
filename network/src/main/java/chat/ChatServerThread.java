@@ -9,6 +9,7 @@ import java.io.Writer;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,7 +17,7 @@ public class ChatServerThread extends Thread {
 	private String nickname;
 	private Socket socket;
 	private List<Writer> listWriters;
-
+	private List<String> users = new ArrayList<String>();
 	
 	public ChatServerThread( Socket socket, List<Writer> listWriters  ) {
 		this.socket = socket;
@@ -73,7 +74,11 @@ public class ChatServerThread extends Thread {
 		}		
 	}
 	
-	
+
+	private void chatUser(PrintWriter printWriter) {
+		users.add(nickname);
+		printWriter.println(users);
+	}
 
 	private void doQuit(  Writer writer ) {
 		removeWriter( writer );
@@ -105,8 +110,6 @@ public class ChatServerThread extends Thread {
 		
 		// ack
 		((PrintWriter) writer).println("join:ok");
-		
-		
 		
 	}
 
